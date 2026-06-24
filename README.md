@@ -1,6 +1,6 @@
 # Semantic Document Search (RAG demo)
 
-Sémantické vyhledávání v dokumentech postavené na **vektorové databázi** a **RAG** pipeline s Claude. Celé běží v Dockeru a nastartuje jedním příkazem.
+Sémantické vyhledávání v dokumentech postavené na **vektorové databázi** a **RAG** pipeline s Claude. Celé běží v Dockeru a nastartuje jedním příkazem. Součástí je i jednoduché **webové UI** na `http://localhost:8000/`.
 
 ## Co to ukazuje (talking points na pohovor)
 
@@ -9,6 +9,8 @@ Sémantické vyhledávání v dokumentech postavené na **vektorové databázi**
 - **Čistá architektura** — oddělené vrstvy: routery → služby (embeddings, RAG) → databáze. Provider embeddingů je za rozhraním, jde vyměnit (lokální model ↔ cloud) bez zásahu do zbytku.
 - **Graceful degradation** — bez `ANTHROPIC_API_KEY` funguje jako čisté sémantické vyhledávání; klíč jen zapne generování odpovědí.
 - **Production-ready detaily** — healthchecky, multi-stage závislosti, env config přes pydantic-settings, OpenAPI dokumentace zdarma, testy.
+
+> Podrobný rozbor vrstev a designových rozhodnutí je v [ARCHITEKTURA.md](ARCHITEKTURA.md).
 
 ## Architektura
 
@@ -26,15 +28,18 @@ cp .env.example .env          # volitelně doplň ANTHROPIC_API_KEY
 docker compose up --build
 ```
 
-API běží na `http://localhost:8000`, interaktivní dokumentace na `http://localhost:8000/docs`.
-Při startu se naseeduje 5 ukázkových dokumentů.
+Při startu se naseeduje 5 ukázkových dokumentů. Pak je k dispozici:
+
+- **Webové UI** — `http://localhost:8000/` (vyhledávání, dotaz na AI, správa dokumentů)
+- **Interaktivní API dokumentace** — `http://localhost:8000/docs`
 
 ## Endpointy
 
 | Metoda | Cesta | Popis |
 |--------|-------|-------|
+| `GET`  | `/` | Webové UI (jednostránková aplikace) |
 | `POST` | `/api/documents` | Přidá a zaembedduje dokument |
-| `GET`  | `/api/documents` | Seznam dokumentů |
+| `GET`  | `/api/documents` | Seznam dokumentů (vč. obsahu) |
 | `DELETE` | `/api/documents/{id}` | Smaže dokument |
 | `GET`  | `/api/search?q=...` | Čisté sémantické vyhledávání se skóre |
 | `POST` | `/api/ask` | RAG — vyhledá kontext a nechá Claude odpovědět |

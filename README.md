@@ -33,6 +33,20 @@ Při startu se naseeduje 5 ukázkových dokumentů. Pak je k dispozici:
 - **Webové UI** — `http://localhost:8000/` (vyhledávání, dotaz na AI, správa dokumentů)
 - **Interaktivní API dokumentace** — `http://localhost:8000/docs`
 
+## Náhledy
+
+Úvodní stránka — vyhledávání, RAG dotaz a správa dokumentů na jedné stránce:
+
+![Úvodní stránka](docs/screenshots/homepage.png)
+
+Sémantické vyhledávání — výsledky seřazené podle skóre podobnosti:
+
+![Výsledky vyhledávání](docs/screenshots/search.png)
+
+RAG odpověď — Claude odpoví z nalezeného kontextu a uvede zdroje:
+
+![RAG odpověď](docs/screenshots/ask.png)
+
 ## Endpointy
 
 | Metoda | Cesta | Popis |

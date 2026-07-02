@@ -12,6 +12,22 @@ Sémantické vyhledávání v dokumentech postavené na **vektorové databázi**
 
 > Podrobný rozbor vrstev a designových rozhodnutí je v [ARCHITEKTURA.md](ARCHITEKTURA.md).
 
+## 7 zajímavostí o projektu
+
+1. **Žádný samostatný vektorový store.** Embeddingy i podobnostní vyhledávání běží přímo v PostgreSQL díky rozšíření `pgvector` — jedna databáze na data i vektory, cosine similarity přes `IVFFlat` index (`app/database.py`).
+
+2. **Funguje i bez klíče k Claude.** Bez `ANTHROPIC_API_KEY` se `/api/ask` sám degraduje na čisté sémantické vyhledávání se stub odpovědí; klíč jen zapne generování. Není to bug, je to záměr (graceful degradation).
+
+3. **Embedding dimenze (384) je zadrátovaná na třech místech, která musí souhlasit** — lokální model `all-MiniLM-L6-v2`, `settings.embedding_dim` a sloupec `Vector(...)`. Změna modelu znamená změnit dim *a* přegenerovat tabulku i index (smazat volume `pgdata`).
+
+4. **Provider embeddingů je za rozhraním (ABC) + factory se singletonem.** `get_embedding_provider()` je `@lru_cache(maxsize=1)`, takže se model načte jen jednou. Zbytek aplikace nikdy neimportuje konkrétní provider — cloud provider (Voyage/OpenAI) je připravený jako rozšiřovací bod.
+
+5. **Model se stahuje až při prvním použití — uvnitř kontejneru.** `sentence-transformers` si `all-MiniLM-L6-v2` (384-dim, žádné externí volání při inferenci) stáhne při prvním embeddingu, ne při buildu image.
+
+6. **„Testy" nejsou izolované unit testy.** `tests/` volají *živý* stack přes HTTP na `localhost:8000` — je to spíš smoke/integration sada, která ověřuje reálné chování celé pipeline včetně databáze.
+
+7. **Seeduje se chytře, ne slepě.** Při startu (`lifespan`) se 5 ukázkových dokumentů nahraje jen tehdy, když je tabulka prázdná — restart kontejneru tak data neduplikuje. RAG odpověď generuje `claude-sonnet-4-6` výhradně z nalezeného kontextu.
+
 ## Architektura
 
 ```

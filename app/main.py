@@ -51,7 +51,7 @@ INDEX_HTML = """\
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>sémantické vyhledávání · RAG demo</title>
+  <title>t418-py-rag-search-postgresql · sémantické vyhledávání</title>
   <style>
     :root {
       --bg: #0a0e16; --panel: #111726; --panel-2: #0d1320;
@@ -71,6 +71,10 @@ INDEX_HTML = """\
 
     header { display: flex; align-items: flex-start; justify-content: space-between;
       gap: 1rem; flex-wrap: wrap; padding: .5rem 0 1.75rem; }
+    .brand .appcode { display: inline-block; font: 600 .7rem/1 var(--mono);
+      letter-spacing: .08em; color: var(--accent-text); background: var(--accent-soft);
+      border: 1px solid var(--accent-soft); padding: .3rem .55rem; border-radius: 6px;
+      margin: 0 0 .55rem; }
     .brand h1 { margin: 0; font: 600 1.5rem/1.2 var(--mono); color: var(--accent-text);
       letter-spacing: -.01em; }
     .brand h1 .b { color: var(--faint); font-weight: 400; }
@@ -152,6 +156,7 @@ INDEX_HTML = """\
   <div class="wrap">
     <header>
       <div class="brand">
+        <span class="appcode">t418-py-rag-search-postgresql</span>
         <h1><span class="b">&lt;</span>sémantické vyhledávání<span class="b">&gt;</span></h1>
         <p>Embeddingy · pgvector · RAG nad Claude — FastAPI / Python</p>
       </div>

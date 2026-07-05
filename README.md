@@ -2,6 +2,8 @@
 
 Sémantické vyhledávání v dokumentech postavené na **vektorové databázi** a **RAG** pipeline s Claude. Celé běží v Dockeru a nastartuje jedním příkazem. Součástí je i jednoduché **webové UI** na `http://localhost:8000/`.
 
+> 🎤 Chcete projekt **odprezentovat někomu bez technického zázemí** (nezná AI, Claude, RAG ani Python)? Hotový scénář prezentace najdete v [DEMO.md](DEMO.md).
+
 ## Co to ukazuje (talking points na pohovor)
 
 - **RAG pipeline** — embedding dotazu → vektorové vyhledání nejbližších dokumentů → Claude odpoví *jen* z nalezeného kontextu (omezení halucinací).
